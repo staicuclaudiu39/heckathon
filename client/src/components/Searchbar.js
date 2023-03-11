@@ -25,7 +25,8 @@ const Searchbar = () => {
     setSearch(target.value);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const rawResponse = await fetch(`${HOST}/api/submit`, {
       method: "POST",
       headers: {
@@ -39,19 +40,14 @@ const Searchbar = () => {
     console.log(content);
   };
 
-  const handleKeyDown = (e) => {
-    if (e === "Enter") {
-      handleSubmit();
-    }
-  };
-
   return (
-    <Input
-      onChange={handleSearch}
-      onSubmit={handleSubmit}
-      onKeyDown={handleKeyDown}
-      placeholder="Search..."
-    />
+    <form onSubmit={handleSubmit}>
+      <Input
+        onChange={handleSearch}
+        onSubmit={handleSubmit}
+        placeholder="Search..."
+      />
+    </form>
   );
 };
 
