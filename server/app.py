@@ -1,8 +1,49 @@
+from flask import Flask, jsonify, render_template, request
+from flask_cors import CORS
+import flask_login
+import flask_admin
+import flask_wtf
 import os
 import replicate
-from flask import Flask, request, jsonify
+
+from flask_pymongo import PyMongo
+
+from config import Config
 
 app = Flask(__name__)
+CORS(app)
+app.config.from_object(Config)
+
+
+mongo = PyMongo(app)
+
+
+@app.route("/", methods=["GET", 'POST'])
+def home():
+    """
+    Home page route
+    """
+    if request.method == 'POST':
+        message = request.form['message']
+        return jsonify(your_message=message)
+    return render_template("index.html")
+
+
+@app.route("/hello", methods=["GET"])
+def hello():
+    """
+    Hello route
+    """
+    return 'hello'
+
+
+@app.route('/message', methods=['POST'])
+def message():
+    """
+    Message route
+    """
+    message = request.json.get("message")
+    return jsonify(your_message=message)
 
 
 @app.route('/api/submit', methods=['POST'])
@@ -57,3 +98,7 @@ def textToImage(text):
     output = version.predict(**inputs)
     print(output)
     return output
+
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0")
