@@ -1,0 +1,13 @@
+black
+isort
+flask
+Flask-CORS
+
+
+
+
+Flask-Login
+Flask-Admin
+Flask-WTF
+
+Flask-PyMongo
