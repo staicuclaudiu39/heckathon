@@ -27,10 +27,7 @@ const Typography = styled("div")`
   margin-bottom: 10px;
 `;
 
-const Image = styled("img")`
-  width: 400px;
-  height: 400px;
-`;
+
 
 const Search = () => {
   return (
