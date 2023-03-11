@@ -28,8 +28,7 @@ def home():
         return jsonify(your_message=message)
     return render_template("index.html")
 
-# Request image route
-@app.route('/api/submit', methods=['POST'])
+# Helpers
 def textToImage(text):
     os.environ['REPLICATE_API_TOKEN'] = '40c55e97d7f9d9ecc8e16b00d1195109b07393a3'
     api_token = os.environ.get('REPLICATE_API_TOKEN')
@@ -74,12 +73,14 @@ def textToImage(text):
     output = version.predict(**inputs)
     print(output)
     return output
-    
-    def submit():
-        input_data = request.json.get('text')
-        output_data = textToImage(input_data)
-        # result = {'status': 'success'}
-        return jsonify(output_data)
+
+# Request image route
+@app.route('/api/submit', methods=['POST'])    
+def submit():
+    input_data = request.json.get('text')
+    output_data = textToImage(input_data)
+    # result = {'status': 'success'}
+    return jsonify(output_data)
 
 
 if __name__ == "__main__":
