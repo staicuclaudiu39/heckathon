@@ -11,13 +11,13 @@ from flask_pymongo import PyMongo
 from config import Config
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Content-Type"}})
 app.config.from_object(Config)
 
 
 mongo = PyMongo(app)
 
-
+# Home route
 @app.route("/", methods=["GET", 'POST'])
 def home():
     """
@@ -28,32 +28,8 @@ def home():
         return jsonify(your_message=message)
     return render_template("index.html")
 
-
-@app.route("/hello", methods=["GET"])
-def hello():
-    """
-    Hello route
-    """
-    return 'hello'
-
-
-@app.route('/message', methods=['POST'])
-def message():
-    """
-    Message route
-    """
-    message = request.json.get("message")
-    return jsonify(your_message=message)
-
-
+# Request image route
 @app.route('/api/submit', methods=['POST'])
-def submit():
-    input_data = request.json.get('inputData')
-    output_data = textToImage(input_data)
-    # result = {'status': 'success'}
-    return jsonify(output_data)
-
-
 def textToImage(text):
     os.environ['REPLICATE_API_TOKEN'] = '40c55e97d7f9d9ecc8e16b00d1195109b07393a3'
     api_token = os.environ.get('REPLICATE_API_TOKEN')
@@ -98,6 +74,12 @@ def textToImage(text):
     output = version.predict(**inputs)
     print(output)
     return output
+    
+    def submit():
+        input_data = request.json.get('text')
+        output_data = textToImage(input_data)
+        # result = {'status': 'success'}
+        return jsonify(output_data)
 
 
 if __name__ == "__main__":
