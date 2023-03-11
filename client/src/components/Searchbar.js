@@ -109,7 +109,9 @@ const Searchbar = () => {
     setImage(content);
   };
 
-  const handleCreateNFT = () => {};
+  const handleCreateNFT = () => {
+    
+  };
 
   if (loading) {
     return (
