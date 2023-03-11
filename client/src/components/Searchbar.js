@@ -1,5 +1,6 @@
-import styled from "@emotion/styled";
 import React, { useState } from "react";
+import styled from "@emotion/styled";
+import { HOST } from "../utls/constants";
 
 const Input = styled("input")`
   border: 1px solid grey;
@@ -25,13 +26,13 @@ const Searchbar = () => {
   };
 
   const handleSubmit = async () => {
-    const rawResponse = await fetch("https://httpbin.org/post", {
+    const rawResponse = await fetch(`${HOST}/api/submit`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ a: 1, b: "Textual content" }),
+      body: JSON.stringify({ text: search }),
     });
     const content = await rawResponse.json();
 
