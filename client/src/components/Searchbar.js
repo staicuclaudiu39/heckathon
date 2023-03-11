@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { HOST } from "../utls/constants";
+import {
+  HOST,
+  REACT_APP_PINATA_API_KEY,
+  REACT_APP_PINATA_API_SECRET,
+} from "../utls/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import Loading from "./Loading";
+import axios from "axios";
 
 const Input = styled("input")`
   border: 1px solid grey;
@@ -109,8 +114,40 @@ const Searchbar = () => {
     setImage(content);
   };
 
-  const handleCreateNFT = () => {
-    
+  const urlToObject = async (url) => {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const file = new File([blob], "image.jpg", { type: blob.type });
+
+    return file;
+  };
+
+  const handleCreateNFT = async () => {
+    const img = await urlToObject(image);
+    if (img) {
+      try {
+        const formData = new FormData();
+        formData.append("file", img);
+
+        const resFile = await axios({
+          method: "post",
+          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+          data: formData,
+          headers: {
+            pinata_api_key: `${REACT_APP_PINATA_API_KEY}`,
+            pinata_secret_api_key: `${REACT_APP_PINATA_API_SECRET}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+        console.log(ImgHash);
+        //Take a look at your Pinata Pinned section, you will see a new file added to you list.
+      } catch (error) {
+        console.log("Error sending File to IPFS: ");
+        console.log(error);
+      }
+    }
   };
 
   if (loading) {

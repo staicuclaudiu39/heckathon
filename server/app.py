@@ -11,7 +11,7 @@ from flask_pymongo import PyMongo
 from config import Config
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*", "headers": "Content-Type"}})
+CORS(app, resources={r"/api/*": {"origins": "*", "headers": "*"}})
 app.config.from_object(Config)
 
 
@@ -30,7 +30,7 @@ def home():
 
 # Helpers
 def textToImage(text):
-    os.environ['REPLICATE_API_TOKEN'] = '40c55e97d7f9d9ecc8e16b00d1195109b07393a3'
+    os.environ['REPLICATE_API_TOKEN'] = '10fac599a8ab06ead949e0b6616cc3e681d4f9f7'
     api_token = os.environ.get('REPLICATE_API_TOKEN')
 
     client = replicate.Client(api_token=api_token)
