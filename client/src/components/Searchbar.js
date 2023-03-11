@@ -12,7 +12,7 @@ const Input = styled("input")`
 
   &:hover,
   &:focus {
-    border: 1.5px solid #F2622E;
+    border: 1.5px solid gray;
     background-color: white;
   }
 `;
@@ -24,8 +24,18 @@ const Searchbar = () => {
     setSearch(target.value);
   };
 
-  const handleSubmit = () => {
-    console.log(search);
+  const handleSubmit = async () => {
+    const rawResponse = await fetch("https://httpbin.org/post", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ a: 1, b: "Textual content" }),
+    });
+    const content = await rawResponse.json();
+
+    console.log(content);
   };
 
   const handleKeyDown = (e) => {

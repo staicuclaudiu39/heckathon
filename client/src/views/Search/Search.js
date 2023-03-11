@@ -1,6 +1,7 @@
 import React from "react";
 import Searchbar from "../../components/Searchbar";
 import styled from "@emotion/styled";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Wrapper = styled("div")`
   display: flex;
@@ -26,13 +27,27 @@ const Typography = styled("div")`
   margin-bottom: 10px;
 `;
 
+const Image = styled("img")`
+  width: 400px;
+  height: 400px;
+`;
+
 const Search = () => {
   return (
     <Wrapper>
-      <div>
-        <Typography>NFTxt</Typography>
-        <Searchbar />
-      </div>
+      <AnimatePresence>
+        <motion.div
+          key="modal"
+          initial={{ opacity: 0, y: -200 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Typography>NFTXT</Typography>
+          <Searchbar />
+          {/* <Image src="https://www.zelda.com/links-awakening/assets/img/home/hero-char.png" /> */}
+        </motion.div>
+      </AnimatePresence>
     </Wrapper>
   );
 };
