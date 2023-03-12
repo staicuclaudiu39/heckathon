@@ -88,9 +88,19 @@ const Button = styled("button")`
   }
 `;
 
+const Link = styled("div")`
+  color: #ffa500;
+  padding: 11px;
+
+  background-color: #282828;
+  border-radius: 10px;
+  border: 1px solid #989898;
+`;
+
 const Searchbar = () => {
   const [search, setSearch] = useState("");
   const [image, setImage] = useState("");
+  const [IPFS, setIPFS] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSearch = ({ target }) => {
@@ -129,6 +139,8 @@ const Searchbar = () => {
         const formData = new FormData();
         formData.append("file", img);
 
+        setLoading(true);
+
         const resFile = await axios({
           method: "post",
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
@@ -141,7 +153,8 @@ const Searchbar = () => {
         });
 
         const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
-        console.log(ImgHash);
+        setLoading(false);
+        setIPFS(ImgHash);
         //Take a look at your Pinata Pinned section, you will see a new file added to you list.
       } catch (error) {
         console.log("Error sending File to IPFS: ");
@@ -156,6 +169,10 @@ const Searchbar = () => {
         <Loading />;
       </Center>
     );
+  }
+
+  if (IPFS) {
+    return <Link>{IPFS}</Link>;
   }
 
   return image ? (
@@ -175,8 +192,6 @@ const Searchbar = () => {
     </AnimatePresence>
   ) : (
     <form onSubmit={handleSubmit}>
-      {" "}
-      :
       <Input
         onChange={handleSearch}
         onSubmit={handleSubmit}
