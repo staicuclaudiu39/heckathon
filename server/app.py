@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*", "headers": "*"}})
 app.config.from_object(Config)
 
-
+a = 2
 mongo = PyMongo(app)
 
 # Home route
